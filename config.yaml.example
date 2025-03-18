@@ -1,0 +1,46 @@
+# fast api settings
+title: FastAPI Alerting Gateway
+description: A simple API for receiving alert hooks and sending to various services. Currently supports SMTP, Microsoft Teams chat and Zoom Chat as destinations.
+debug_mode: true
+
+# rabbitmq connection
+rabbitmq_conn: amqp://guest:guest@localhost/
+
+# smtp settings
+smtp_from_address: test@test.com
+smtp_server: smtp.test.com
+smtp_port: 25
+
+# authorized api key needed for all requests
+api_keys: 
+  - your_first_api_key
+  - your_second_api_key
+
+# zoom app authorization
+# zoom_account_id: 
+# zoom_client_id:
+# zoom_client_secret:
+
+# rabbitmq queues
+# this determines what service queued messages are sent to
+queues:
+  - name: test
+    id: 1
+    service_ids:
+      - 2
+
+# service options
+services:
+  #- name: test-smtp
+  #  id: 1
+  #  type: smtp
+  #  recipient: recipient@test.com
+  #- name: test-zoom
+  #  id: 2
+  #  type: zoom
+  #  recipient: https://integrations.zoom.us/chat/webhooks/incomingwebhook/...
+  #  authorization:
+  #- name: test-teams
+  #  id: 3
+  #  type: msteams
+  #  recipient: https://tenant.webhook.office.com/webhookb2/...

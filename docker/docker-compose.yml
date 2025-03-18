@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+
+  # Nginx reverse proxy
+  nginx:
+    image: nginx
+    container_name: nginx
+    volumes:
+      - type: bind
+        source: ./nginx/default.conf
+        target: /etc/nginx/conf.d/default.conf
+      - type: bind
+        source: /etc/ssl/private/ssl-cert-snakeoil.key
+        target: /etc/ssl/private/ssl-cert-snakeoil.key
+      - type: bind
+        source: /etc/ssl/certs/ssl-cert-snakeoil.pem
+        target: /etc/ssl/certs/ssl-cert-snakeoil.pem
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      fastapi:
+        condition: service_started
+
+  # FastAPI app service
+  fastapi:
+    build:
+      context: ../
+      dockerfile: ./docker/fastapi/Dockerfile
+    container_name: fastapi
+    volumes:
+      - type: bind
+        source: ../config.yaml
+        target: /config.yaml
+    depends_on:
+      rabbitmq:
+         condition: service_healthy
+
+  # RabbitMQ service
+  rabbitmq:
+    image: rabbitmq:4
+    container_name: rabbitmq
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      interval: 30s
+      timeout: 30s
+      retries: 10
+
+volumes:
+  rabbitmq_data:
