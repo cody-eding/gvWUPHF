@@ -4,7 +4,7 @@ A cross-platform alerting API, loosely inspired by [The Office](https://en.wikip
 
 ## Overview
 
-A simple FastAPI application receives alerts via HTTPS REST API calls. The application stores the alerts in a RabbitMQ message queue and the subsequently processes the alerts to various destinations.
+A simple FastAPI application receives alerts via HTTPS REST API calls. The application stores the alerts in a RabbitMQ message queue and then subsequently processes the alerts to various destinations.
 
 Currently the application supports the following services:
 
