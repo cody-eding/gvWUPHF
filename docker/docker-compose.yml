@@ -43,7 +43,7 @@ services:
 
   # RabbitMQ service
   rabbitmq:
-    image: rabbitmq:4
+    image: rabbitmq:4-management
     container_name: rabbitmq
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
