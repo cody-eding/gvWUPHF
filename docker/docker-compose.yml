@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
 
   # Nginx reverse proxy
@@ -22,6 +20,9 @@ services:
     depends_on:
       fastapi:
         condition: service_started
+    networks:
+      app_network:
+        ipv4_address: 172.24.1.10
 
   # FastAPI app service
   fastapi:
@@ -36,6 +37,9 @@ services:
     depends_on:
       rabbitmq:
          condition: service_healthy
+    networks:
+      app_network:
+        ipv4_address: 172.24.1.20
 
   # RabbitMQ service
   rabbitmq:
@@ -48,6 +52,18 @@ services:
       interval: 30s
       timeout: 30s
       retries: 10
+    ports:
+      - "127.0.0.1:15692:15692"
+    networks:
+      app_network:
+        ipv4_address: 172.24.1.30
 
 volumes:
   rabbitmq_data:
+
+networks:
+  app_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.24.1.0/24
