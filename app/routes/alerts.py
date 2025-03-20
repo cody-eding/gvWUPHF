@@ -43,6 +43,9 @@ async def publish_alert(alert: Alert, queue_name: str, service_ids: list) -> Non
                 aio_pika.Message(body=message_body, headers={'service_ids': service_ids}),
                 routing_key=queue_name
             )
+
+            # Explicitly close the channel after publishing
+            await channel.close()
     except Exception as e:
         logger.error(f"Error publishing alert: {e}", exc_info=True)
         raise
